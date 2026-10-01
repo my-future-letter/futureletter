@@ -1,0 +1,6 @@
+const LOGO="https://my-future-letter.github.io/futureletter/my-picture/my-future-letter-logo.png";
+async function sha256(s){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}
+async function deriveKey(password,salt){const base=await crypto.subtle.importKey("raw",new TextEncoder().encode(password),"PBKDF2",false,["deriveKey"]);return crypto.subtle.deriveKey({name:"PBKDF2",salt:new TextEncoder().encode(salt),iterations:250000,hash:"SHA-256"},base,{name:"AES-GCM",length:256},false,["encrypt","decrypt"])}
+async function encryptText(text,password,salt){const key=await deriveKey(password,salt);const iv=crypto.getRandomValues(new Uint8Array(12));const ct=await crypto.subtle.encrypt({name:"AES-GCM",iv},key,new TextEncoder().encode(text));return {iv:btoa(String.fromCharCode(...iv)),data:btoa(String.fromCharCode(...new Uint8Array(ct))),salt}}
+async function decryptText(payload,password){const key=await deriveKey(password,payload.salt);const iv=Uint8Array.from(atob(payload.iv),c=>c.charCodeAt(0));const ct=Uint8Array.from(atob(payload.data),c=>c.charCodeAt(0));const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv},key,ct);return new TextDecoder().decode(pt)}
+window.mfl={LOGO,sha256,encryptText,decryptText};
