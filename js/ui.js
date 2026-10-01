@@ -1,5 +1,0 @@
-export function $(s){return document.querySelector(s)}
-export function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-export function toast(msg,type='info'){const el=document.createElement('div');el.textContent=msg;Object.assign(el.style,{position:'fixed',left:'50%',bottom:'22px',transform:'translateX(-50%)',zIndex:9999,padding:'12px 16px',borderRadius:'14px',background:type==='error'?'#b42318':type==='success'?'#067647':'#14213d',color:'#fff',fontWeight:700,boxShadow:'0 12px 30px rgba(0,0,0,.18)',maxWidth:'90%',textAlign:'center'});document.body.appendChild(el);setTimeout(()=>el.remove(),3000)}
-export function requireAuth(auth,redirect='login.html'){return new Promise(resolve=>{const off=auth.onAuthStateChanged(u=>{off();if(!u)location.href=redirect;else resolve(u)})})}
-export function formatDate(ts){if(!ts)return '';const d=ts?.toDate?ts.toDate():new Date(ts);return new Intl.DateTimeFormat('en',{year:'numeric',month:'short',day:'numeric'}).format(d)}
