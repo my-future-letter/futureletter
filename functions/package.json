@@ -1,0 +1,1 @@
+{"name":"my-future-letter-functions","private":true,"engines":{"node":"20"},"dependencies":{"firebase-admin":"^13.6.0","firebase-functions":"^6.5.0"}}
